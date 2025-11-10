@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>温馨祝福时刻</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            color: #5a3d5c;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            position: relative;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #ff6b93, #ff8fab, #e84393);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .heart {
+            font-size: 4rem;
+            color: #ff6b93;
+            animation: heartbeat 1.5s ease-in-out infinite;
+            cursor: pointer;
+            display: inline-block;
+            margin: 20px 0;
+            transition: all 0.3s;
+        }
+        
+        .heart:hover {
+            transform: scale(1.2);
+        }
+        
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .btn {
+            background: linear-gradient(45deg, #ff6b93, #ff8fab);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            margin: 15px;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(255, 107, 147, 0.4);
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 107, 147, 0.6);
+        }
+        
+        .btn i {
+            margin-right: 10px;
+        }
+        
+        .surprise-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+        
+        .floating-element {
+            position: absolute;
+            font-size: 24px;
+            animation: floatUp 5s linear forwards;
+            pointer-events: none;
+        }
+        
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .message {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            border-left: 5px solid #ff6b93;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .counter {
+            font-size: 1.5rem;
+            color: #ff6b93;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        
+        .blessing-box {
+            margin-top: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #a8edea, #fed6e3);
+            border-radius: 15px;
+            border: 3px dashed #e84393;
+            display: none;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+        
+        .firework {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            animation: fireworkExplode 1s ease-out forwards;
+            pointer-events: none;
+        }
+        
+        @keyframes fireworkExplode {
+            0% {
+                transform: translate(var(--x), var(--y)) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(var(--tx), var(--ty)) scale(0);
+                opacity: 0;
+            }
+        }
+        
+        .blessing-card {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            z-index: 20;
+            max-width: 500px;
+            text-align: center;
+            transition: transform 0.5s ease;
+        }
+        
+        .blessing-card.active {
+            transform: translate(-50%, -50%) scale(1);
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #ff6b93;
+        }
+        
+        .romantic-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(255, 182, 193, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 192, 203, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(255, 182, 193, 0.3) 0%, transparent 50%);
+            z-index: 1;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #f0f0f0;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b93, #ff8fab);
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="romantic-bg"></div>
+    <div class="surprise-container" id="surpriseContainer"></div>
+    
+    <div class="container">
+        <h1>💖 温馨祝福时刻 💖</h1>
+        
+        <div class="heart" id="mainHeart">❤️</div>
+        
+        <div class="counter">
+            祝福进度: <span id="progressCount">0</span>/10
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress" id="progressBar"></div>
+        </div>
+        
+        <div class="message" id="welcomeMessage">
+            点击爱心收集祝福能量，集满10个进度条有特别惊喜！
+        </div>
+        
+        <div class="message" id="specialMessage" style="display: none;">
+            <div class="blessing-box">
+                <h3>🌟 给你的美好祝福 🌟</h3>
+                <p>愿你的人生如春日暖阳，温暖而明亮<br>
+                愿你的每一天都充满欢笑和希望<br>
+                愿所有的美好都如期而至<br>
+                愿你永远被爱包围，幸福安康</p>
+                <p style="text-align: right; margin-top: 15px;">—— 真诚的祝福 ❤️</p>
+            </div>
+        </div>
+        
+        <div class="btn-group">
+            <button class="btn" id="surpriseBtn"><i class="fas fa-gift"></i> 祝福惊喜</button>
+            <button class="btn" id="blessingBtn"><i class="fas fa-star"></i> 美好祝愿</button>
+            <button class="btn" id="resetBtn"><i class="fas fa-redo"></i> 重新开始</button>
+        </div>
+    </div>
+    
+    <div class="blessing-card" id="blessingCard">
+        <button class="close-btn" id="closeCard">&times;</button>
+        <h2>✨ 真诚的祝福 ✨</h2>
+        <p style="margin: 20px 0; line-height: 1.8; text-align: left;">
+            亲爱的朋友，<br><br>
+            在这个美好的时刻，我想送上最真挚的祝福：<br><br>
+            🌸 愿你身体健康，万事如意<br>
+            🌟 愿你事业顺利，前程似锦<br>
+            💕 愿你家庭幸福，和睦美满<br>
+            ✨ 愿你心想事成，梦想成真<br><br>
+            愿你的生活充满阳光和欢笑，<br>
+            每一天都比昨天更加精彩！<br><br>
+            最美好的祝愿，<br>
+            ❤️
+        </p>
+        <button class="btn" id="closeBlessingBtn">感谢祝福</button>
+    </div>
+
+    <script>
+        let progressCount = 0;
+        const mainHeart = document.getElementById('mainHeart');
+        const progressCountDisplay = document.getElementById('progressCount');
+        const progressBar = document.getElementById('progressBar');
+        const welcomeMessage = document.getElementById('welcomeMessage');
+        const specialMessage = document.getElementById('specialMessage');
+        const surpriseContainer = document.getElementById('surpriseContainer');
+        const surpriseBtn = document.getElementById('surpriseBtn');
+        const blessingBtn = document.getElementById('blessingBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const blessingCard = document.getElementById('blessingCard');
+        const closeCard = document.getElementById('closeCard');
+        const closeBlessingBtn = document.getElementById('closeBlessingBtn');
+
+        // 显示欢迎消息
+        setTimeout(() => {
+            welcomeMessage.style.display = 'block';
+        }, 500);
+
+        // 爱心点击效果
+        mainHeart.addEventListener('click', function() {
+            if (progressCount < 10) {
+                progressCount++;
+                updateProgress();
+                
+                // 创建漂浮元素
+                createFloatingElements(8);
+                
+                // 心跳动画
+                this.style.animation = 'none';
+                setTimeout(() => {
+                    this.style.animation = 'heartbeat 1.5s ease-in-out infinite';
+                }, 10);
+                
+                // 根据进度显示不同消息
+                showProgressMessage();
+                
+                // 达到10次时显示特别消息
+                if (progressCount === 10) {
+                    setTimeout(() => {
+                        specialMessage.style.display = 'block';
+                        createFireworks(30);
+                        showMessage("恭喜！你收集了满满的祝福能量！");
+                    }, 500);
+                }
+            }
+        });
+
+        // 更新进度条
+        function updateProgress() {
+            progressCountDisplay.textContent = progressCount;
+            progressBar.style.width = `${progressCount * 10}%`;
+        }
+
+        // 显示进度消息
+        function showProgressMessage() {
+            const messages = [
+                "继续点击，祝福能量在积累中...",
+                "你的热情让祝福更加强大！",
+                "美好祝愿正在汇聚...",
+                "再多一点正能量...",
+                "快要达到祝福顶峰了！",
+                "正能量满满！",
+                "你真是个充满正能量的人！",
+                "特别祝福即将到来！",
+                "就差最后一步了！",
+                "终极祝福解锁！"
+            ];
+            
+            if (progressCount > 0 && progressCount <= 10) {
+                showMessage(messages[progressCount - 1]);
+            }
+        }
+
+        // 创建漂浮元素
+        function createFloatingElements(count) {
+            const elements = ['❤️', '💖', '💕', '💗', '💓', '💞', '🌸', '🌹', '✨', '🌟'];
+            
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const element = document.createElement('div');
+                    element.className = 'floating-element';
+                    element.innerHTML = elements[Math.floor(Math.random() * elements.length)];
+                    element.style.left = Math.random() * 100 + 'vw';
+                    element.style.fontSize = (Math.random() * 20 + 20) + 'px';
+                    element.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                    element.style.color = `hsl(${Math.random() * 60 + 300}, 100%, 65%)`;
+                    
+                    surpriseContainer.appendChild(element);
+                    
+                    // 移除元素
+                    setTimeout(() => {
+                        if (element.parentNode) {
+                            element.remove();
+                        }
+                    }, 5000);
+                }, i * 100);
+            }
+        }
+
+        // 创建烟花效果
+        function createFireworks(count) {
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const firework = document.createElement('div');
+                    firework.className = 'firework';
+                    
+                    const x = Math.random() * window.innerWidth;
+                    const y = Math.random() * window.innerHeight;
+                    
+                    firework.style.setProperty('--x', x + 'px');
+                    firework.style.setProperty('--y', y + 'px');
+                    
+                    // 随机爆炸方向
+                    const angle = Math.random() * Math.PI * 2;
+                    const distance = Math.random() * 100 + 50;
+                    const tx = Math.cos(angle) * distance;
+                    const ty = Math.sin(angle) * distance;
+                    
+                    firework.style.setProperty('--tx', tx + 'px');
+                    firework.style.setProperty('--ty', ty + 'px');
+                    
+                    firework.style.background = `hsl(${Math.random() * 360}, 100%, 65%)`;
+                    firework.style.boxShadow = `0 0 10px hsl(${Math.random() * 360}, 100%, 65%)`;
+                    
+                    surpriseContainer.appendChild(firework);
+                    
+                    // 移除烟花
+                    setTimeout(() => {
+                        if (firework.parentNode) {
+                            firework.remove();
+                        }
+                    }, 1000);
+                }, i * 50);
+            }
+        }
+
+        // 显示消息
+        function showMessage(text) {
+            welcomeMessage.textContent = text;
+        }
+
+        // 祝福惊喜按钮
+        surpriseBtn.addEventListener('click', function() {
+            createFloatingElements(30);
+            createFireworks(20);
+            showMessage("哇！满满的祝福惊喜来啦！");
+            
+            // 按钮动画
+            this.style.transform = 'scale(0.9)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 150);
+        });
+
+        // 美好祝愿按钮
+        blessingBtn.addEventListener('click', function() {
+            blessingCard.classList.add('active');
+        });
+
+        // 关闭祝福卡片
+        closeCard.addEventListener('click', closeBlessingCard);
+        closeBlessingBtn.addEventListener('click', closeBlessingCard);
+
+        function closeBlessingCard() {
+            blessingCard.classList.remove('active');
+        }
+
+        // 重置按钮
+        resetBtn.addEventListener('click', function() {
+            progressCount = 0;
+            updateProgress();
+            showMessage("重新开始收集祝福能量...");
+            specialMessage.style.display = 'none';
+        });
+
+        // 自动生成一些漂浮元素
+        setInterval(() => {
+            if (Math.random() > 0.7) {
+                createFloatingElements(1);
+            }
+        }, 2000);
+
+        // 初始显示一些漂浮元素
+        setTimeout(() => {
+            createFloatingElements(5);
+        }, 1000);
+    </script>
+</body>
+</html>
